@@ -9,5 +9,9 @@ def home_page():
     # return_template function is needed to return html file
     return render_template("home.html")
 
+@my_app.route("/about") # @ shows that this line is a decorator
+def about_page():
+    # return_template function is needed to return html file
+    return render_template("about.html")
 
 my_app.run(debug=True)
