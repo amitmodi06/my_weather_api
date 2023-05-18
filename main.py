@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import pandas as pd
 
 # create a website object
 my_app = Flask(__name__)
@@ -12,7 +13,11 @@ def home_page():
 
 @my_app.route("/api/v1/<station>/<date>")  # @ shows that this line is a decorator
 def about_page(station, date):
-    temperature = 54
+    print('date: ', date)
+    filename = "data_small/TG_STAID" + str(station).zfill(6) + ".txt"
+    print(filename)
+    df = pd.read_csv(filename, skiprows=20, parse_dates=["    DATE"])
+    temperature = df.loc[df['    DATE'] == str(date)]['   TG'].squeeze() / 10
     return {"station": station,
             "date": date,
             "temperature": temperature}
