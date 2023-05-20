@@ -23,6 +23,22 @@ def about_page(station, date):
             "date": date,
             "temperature": temperature}
 
+@my_app.route("/api/v1/<station>")
+def station_all_data(station):
+    filename = "data_small/TG_STAID" + str(station).zfill(6) + ".txt"
+    df = pd.read_csv(filename, skiprows=20, parse_dates=["    DATE"])
+    station_data = df.to_dict(orient="records")
+    print(station_data)
+    return station_data
+
+
+@my_app.route("/api/v1/yearly/<station>/<year>")
+def station_year_data(station, year):
+    filename = "data_small/TG_STAID" + str(station).zfill(6) + ".txt"
+    df = pd.read_csv(filename, skiprows=20, parse_dates=["    DATE"])
+    station_data = df.loc[df["    DATE"].dt.year == int(year)]
+    station_data = station_data.to_dict(orient="records")
+    return station_data
 
 if __name__ == "__main__":
     my_app.run(debug=True)
