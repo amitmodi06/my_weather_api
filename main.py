@@ -3,12 +3,13 @@ import pandas as pd
 
 # create a website object
 my_app = Flask(__name__)
-
+df_stations = pd.read_csv("data_small/stations.txt", skiprows=17)
+stations = df_stations[["STAID", "STANAME                                 "]]
 
 @my_app.route("/")  # @ shows that this line is a decorator
 def home_page():
     # return_template function is needed to return html file
-    return render_template("home.html")
+    return render_template("home.html", station_data=stations.to_html())
 
 
 @my_app.route("/api/v1/<station>/<date>")  # @ shows that this line is a decorator
